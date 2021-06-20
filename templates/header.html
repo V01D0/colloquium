@@ -19,13 +19,13 @@
 </head>
 
 <body>
-	<nav class="nav__large">
+	<nav class="nav-large">
 		<ul>
 			<li class="left"><a href="/">Home</a></li>
-			<li class="left"><a href="">Communities</a></li>
-			<li class="left"><a href="">FAQ</a></li>
-			<li class="left"><a href="">News</a></li>
-			<li class="left"><a href="">Get an account!</a></li>
+			<li class="left"><a href="/">Communities</a></li>
+			<li class="left"><a href="/">FAQ</a></li>
+			<li class="left"><a href="/">News</a></li>
+			<li class="left"><a href="/">Get an account!</a></li>
 			<span class="right"><i class="fa fa-user fa-fw" aria-hidden="true"></i><i class="fa fa-angle-down fa-fw"
 					aria-hidden="true"></i></span>
 			{%if not session['username'] %}
@@ -35,7 +35,8 @@
 			{% endif %}
 		</ul>
 	</nav>
-	<nav class="nav__small">
+
+	<nav class="nav-small">
 		<!-- <ul>
 			<li class="left"><a href="/">Home</a></li>
 			<li class="left"><a href="">Communities</a></li>
@@ -43,5 +44,15 @@
 			<li class="left"><a href="">News</a></li>
 			<li class="left"><a href="">Get an account!</a></li>
 		</ul> -->
-		<span onclick="expandNav()"><i class="fas fa-bars fa-2x"></i></span>
+		<div onclick="hideNav()" id="overlay">
+			<ul class="nav-small">
+				<li class="nav-small__item"><a href="/">Home</a></li>
+				<li class="nav-small__item"><a href="/">Communities</a></li>
+				<li class="nav-small__item"><a href="/">FAQ</a></li>
+				<li class="nav-small__item"><a href="/">News</a></li>
+				<li class="nav-small__item"><a href="/sign_up">Register</a></li>
+				<li class="nav-small__item"><a href="/login">Login</a></li>
+			</ul>
+		</div>
+		<span onclick="expandNav()"><i id="navBtn" class="fas fa-bars fa-2x"></i></span>
 	</nav>
