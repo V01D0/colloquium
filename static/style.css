@@ -8,16 +8,33 @@
 
 html {
   font-size: 62.5%;
+  width: 100%;
+  height: 100%;
 }
 
 body {
+  /* min-height: 100%; */
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
   font-family: "Lato", sans-serif;
   font-weight: 400;
   font-size: 2rem;
   line-height: 1.7;
   color: #777;
-  padding: 2rem;
   box-sizing: border-box;
+}
+
+label {
+  color: white;
+}
+
+.nav__small {
+  display: none;
+}
+
+.nav__large {
+  padding: 2rem;
 }
 
 nav li {
@@ -26,8 +43,9 @@ nav li {
   text-transform: uppercase;
 }
 
-nav li a:link {
-  padding: 5rem;
+nav li a:link,
+nav li a:visited {
+  padding: 0 4rem;
   /* color: rgb(124, 184, 74); */
   color: black;
   text-decoration: none;
@@ -35,38 +53,124 @@ nav li a:link {
 
 .left {
   float: left;
+  padding: 0.5rem;
+  margin: auto;
 }
 
 .right {
   text-decoration: none;
-  border-radius: 1.5rem;
   float: right;
-  margin: 0.5rem;
+  margin: auto 0.5rem;
+  border-radius: 1.5rem;
+  color: black;
 }
 
-.btn-register {
+.btn {
+  padding: 0.3rem 6rem;
+  font-family: "Lato", sans-serif;
+  font-size: inherit;
+}
+
+.btn__register {
   color: white;
   background-color: #0057ff;
-  padding: 0rem 6rem;
 }
 
-.btn-login {
+.btn__login {
   color: black;
   background-color: white;
+  border: 1px #0057ff solid;
   box-shadow: 0 0 10px #ccc;
-  /* background-color: #6ec51c; */
-  padding: 0rem 6rem;
+}
+
+.btn__submit {
+  border-radius: 1.5rem;
+  border: none;
+  background: #0057ff;
+  width: 100%;
+  padding: 1rem;
+  color: white;
 }
 
 .left:hover {
-  /* border: 1px black dotted; */
   text-decoration: underline;
-  box-shadow: 0 0 10px #ccc;
-  /* border-radius: 2rem; */
+  box-shadow: 0px 15px 10px -15px #111;
+  border: 1px black solid;
+  border-radius: 2rem;
 }
 
-@media only screen and (max-width: 1430px) {
-  nav {
+.blob1 {
+  position: absolute;
+  right: 15vh;
+}
+
+.login__background {
+  height: 100%;
+  /* background: #20203a; */
+  background: #197193;
+}
+
+.register__background {
+  height: 100%;
+  /* background: #20203a; */
+  background: #197193;
+}
+
+.container {
+  padding: 10rem 10rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 15px #58585850;
+  border-radius: 1rem;
+  background: transparent;
+}
+
+.container h3 {
+  /* text-transform: capitalize; */
+  color: white;
+  text-align: center;
+}
+
+.container input[type="text"],
+.container input[type="password"] {
+  border: 0.2rem black solid;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 100%;
+}
+
+.fa-bars {
+  position: absolute;
+  bottom: 5rem;
+  right: 4rem;
+  color: black;
+}
+
+@media only screen and (min-width: 1411px) {
+  .login__background {
+    margin-top: 3.5rem;
+  }
+  .register__background {
+    margin-top: 3.5rem;
+  }
+}
+
+@media only screen and (max-width: 1410px) and (min-width: 800px) {
+  .fa-bars {
+    position: absolute;
+    top: 2rem;
+    right: 5rem;
+  }
+}
+
+@media only screen and (max-width: 1410px) {
+  .nav__large {
     display: none;
+  }
+  .nav__small {
+    display: block;
   }
 }
