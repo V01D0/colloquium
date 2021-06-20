@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+	<script src="{{ url_for('static', filename='index.js') }}"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
 		integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -18,24 +19,29 @@
 </head>
 
 <body>
-	<nav>
+	<nav class="nav__large">
 		<ul>
-			<li class="left"><a href="">Home</a></li>
+			<li class="left"><a href="/">Home</a></li>
 			<li class="left"><a href="">Communities</a></li>
 			<li class="left"><a href="">FAQ</a></li>
 			<li class="left"><a href="">News</a></li>
 			<li class="left"><a href="">Get an account!</a></li>
-			<li class="right"><i class="fa fa-user fa-fw" aria-hidden="true"></i></li>
+			<span class="right"><i class="fa fa-user fa-fw" aria-hidden="true"></i><i class="fa fa-angle-down fa-fw"
+					aria-hidden="true"></i></span>
 			{%if not session['username'] %}
-			<a class="right btn-register" href="">Sign up</a>
-			<a class="right btn-login" href="">Login</a>
+			<a class="right btn btn__register" href="/sign_up">Sign up</a>
+			<a class="right btn btn__login" href="/login">Login</a>
 			<!-- <li class="right"><a href="">Logout</a></li> -->
 			{% endif %}
 		</ul>
 	</nav>
-	<div>
-
-	</div>
-</body>
-
-</html>
+	<nav class="nav__small">
+		<!-- <ul>
+			<li class="left"><a href="/">Home</a></li>
+			<li class="left"><a href="">Communities</a></li>
+			<li class="left"><a href="">FAQ</a></li>
+			<li class="left"><a href="">News</a></li>
+			<li class="left"><a href="">Get an account!</a></li>
+		</ul> -->
+		<span onclick="expandNav()"><i class="fas fa-bars fa-2x"></i></span>
+	</nav>
