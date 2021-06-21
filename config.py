@@ -1,6 +1,5 @@
 import os
 
-# from flask.config import ConfigAttribute
 
 
 class Config(object):

@@ -1,3 +1,4 @@
+from colloquium import app
 from datetime import timedelta
 from flask import Flask, session, render_template, request, url_for, redirect
 from markupsafe import escape
@@ -7,11 +8,8 @@ from flask import request
 from wtforms.csrf.session import SessionCSRF
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
-app = Flask(__name__)
-
 app.config.from_object('config.DevelopmentConfig')
 db = SQLAlchemy(app)
-# secret = app.config.get('SECRET_KEY')
 
 
 class loginForm(Form):
