@@ -1,38 +1,42 @@
 import os
+from dotenv import find_dotenv, load_dotenv
 
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 class Config(object):
-    DEBUG = False
-    TESTING = False
-    CSRF_ENABLED = True
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
-    # TWITTER_OAUTH_CLIENT_KEY = os.environ.get("TWITTER_OAUTH_CLIENT_KEY")
-    # TWITTER_OAUTH_CLIENT_SECRET = os.environ.get("TWITTER_OAUTH_CLIENT_SECRET")
-    SESSION_COOKIE_SECURE = True
-    SESSION_COOKIE_HTTPONLY = True
-    SESSION_COOKIE_SAMESITE = 'Lax'
 
-    # MAIL_SERVER = 'smtp.gmail.com'
-    # MAIL_PORT = 465
-    # MAIL_USE_TLS = False
-    # MAIL_USE_SSL = True
-    # MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
-    # MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-
-
-class ProductionConfig(Config):
-    DEBUG = False
-    SECRET_KEY = os.environ.get("SECRET_KEY")
-    CSRF_SECRET = os.environ.get("CSRF_SECRET")
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    @staticmethod
+    def init_app(app):
+        pass
 
 
 class DevelopmentConfig(Config):
-    ENV = "development"
-    DEVELOPMENT = True
-    SECRET_KEY = os.environ.get("SECRET_KEY")
-    CSRF_SECRET = os.environ.get("CSRF_SECRET")
-    OAUTHLIB_INSECURE_TRANSPORT = True
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
+        'sqlite://'
+
+
+class ProductionConfig(Config):
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+
+
+config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'production': ProductionConfig,
+
+    'default': DevelopmentConfig
+}
