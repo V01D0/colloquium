@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+	<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+		integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+		integrity="sha512-RXf+QSDCUQs5uwRKaDoXt55jygZZm2V++WUZduaU/Ui/9EGp3f/2KZVahFZBKGH0s774sd3HmrhUy+SgOFQLVQ=="
+		crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+	<title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+	<nav class="nav-large">
+		<ul>
+			<li class="left"><a href="/">Home</a></li>
+			<li class="left"><a href="/">Communities</a></li>
+			<li class="left"><a href="/">FAQ</a></li>
+			<li class="left"><a href="/">News</a></li>
+			<li class="left"><a href="/">Get an account!</a></li>
+			<span class="right"><i class="fa fa-user fa-fw" aria-hidden="true"></i><i class="fa fa-angle-down fa-fw"
+					aria-hidden="true"></i></span>
+			{%if not session['username'] %}
+			<a class="right btn btn__register" href="{{ url_for('auth.sign_up') }}">Sign up</a>
+			<a class="right btn btn__login" href="{{ url_for('auth.login') }}">Login</a>
+			<!-- <li class="right"><a href="">Logout</a></li> -->
+			{% endif %}
+		</ul>
+	</nav>
+
+	<nav class="nav-small">
+		<!-- <ul>
+			<li class="left"><a href="/">Home</a></li>
+			<li class="left"><a href="">Communities</a></li>
+			<li class="left"><a href="">FAQ</a></li>
+			<li class="left"><a href="">News</a></li>
+			<li class="left"><a href="">Get an account!</a></li>
+		</ul> -->
+		<div onclick="hideNav()" id="overlay">
+			<ul class="nav-small">
+				<li class="nav-small__item"><a href="/">Home</a></li>
+				<li class="nav-small__item"><a href="/">Communities</a></li>
+				<li class="nav-small__item"><a href="/">FAQ</a></li>
+				<li class="nav-small__item"><a href="/">News</a></li>
+				<li class="nav-small__item"><a href="{{ url_for('auth.sign_up') }}">Register</a></li>
+				<li class="nav-small__item"><a href="{{ url_for('auth.login') }}">Login</a></li>
+			</ul>
+		</div>
+		<span onclick="expandNav()"><i id="navBtn" class="fas fa-bars fa-2x"></i></span>
+	</nav>
+
+	{% block content %}{% endblock %}
+
+</body>
+
+</html>
