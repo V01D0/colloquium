@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Register - Colloquium{% endblock %}
+{% block content %}
+<div class="register__background">
+	{% for message in get_flashed_messages() %}
+	<script>
+		toastr["error"]("{{ message }}");
+	</script>
+	{% endfor %}
+	{% if form.username.errors %}
+	{% for error in form.username.errors %}
+	<script>
+		toastr["error"]("{{ error }}");
+	</script>
+	{% endfor %}
+	{% endif %}
+	{% if form.password.errors %}
+	{% for error in form.password.errors %}
+	<script>
+		toastr["error"]("{{ error }}");
+	</script>
+	{% endfor %}
+	{% endif %}
+	<div class="container">
+		<h3>Register</h3>
+		<form method="post">
+			{{ form.csrf_token }}
+			{{ form.username.label }}
+			{{ form.username }}
+			<br>
+			{{ form.password.label }}
+			{{ form.password }}
+			<br>
+			{{ form.confirm.label }}
+			{{ form.confirm }}
+			<br><br>
+			{{ form.submit(class="btn btn__submit") }}
+			<!-- <button type="submit" class="btn btn__submit">Register</button> -->
+			<br><br>
+			<a class="hint" href="/login">Have an account already?</a>
+		</form>
+	</div>
+</div>
+{% endblock %}

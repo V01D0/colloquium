@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Login - Colloquium{% endblock %}
+{% block content %}
+<div class="login__background">
+	{% for message in get_flashed_messages() %}
+	<script>
+		toastr["error"]("{{ message }}");
+	</script>
+	{% endfor %}
+	<div class="container">
+		<h3>Login</h3>
+		<form method="post">
+			{{ form.csrf_token }}
+			{{ form.username.label }}
+			{{ form.username }}
+			<br>
+			{{ form.password.label }}
+			{{ form.password }}
+			<br><br>
+			{{ form.submit(class="btn btn__submit") }}
+			<br><br>
+			<a class="hint" href="/sign_up">Don't have an account yet? Get yours today!</a><br>
+			<a class="hint" href="/forgot">Forgot password?</a>
+			<!-- <label for="username">Username</label><br>
+			<input type="text" name="username" id=""><br>
+			<label for="password">Password</label><br>
+			<input type="password" name="password"><br><br>
+			<button type="submit" class="btn btn__submit">Login</button> -->
+		</form>
+	</div>
+</div>
+{% endblock %}
