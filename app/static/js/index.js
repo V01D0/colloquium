@@ -7,10 +7,8 @@ function expandNav() {
     hideNav();
   } else {
     overlay.style.display = "block";
-    console.log(navBtn);
     navBtn.classList.remove("fa-bars");
     navBtn.classList.add("fa-times");
-    console.log(navBtn);
   }
 }
 
