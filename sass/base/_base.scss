@@ -1,0 +1,15 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+  scrollbar-width: thick;
+  scrollbar-color: rgb(255, 255, 255) rgb(90, 90, 90);
+}
+
+html {
+  font-size: 62.5%;
+  width: 100%;
+  height: 100%;
+}
