@@ -2,25 +2,30 @@
 {% block title %}Login - Colloquium{% endblock %}
 {% block content %}
 <div class="login__background">
-	{% for message in get_flashed_messages() %}
+	{% with messages = get_flashed_messages(with_categories=true) %}
+	{% if messages %}
+	{% for category, message in messages %}
 	<script>
-		toastr["error"]("{{ message }}");
+		toastr["{{ category }}"]("{{ message }}");
 	</script>
 	{% endfor %}
+	{% endif %}
+	{% endwith %}
 	<div class="container">
-		<h3>Login</h3>
+		<h3 class="heading">Login</h3>
 		<form method="post">
 			{{ form.csrf_token }}
-			{{ form.username.label }}
-			{{ form.username }}
-			<br>
-			{{ form.password.label }}
-			{{ form.password }}
+			{{ form.username(class="form__input",placeholder="Username") }}
+			{{ form.username.label(class="form__label") }}
+			{{ form.password(class="form__input",placeholder="Password") }}
+			{{ form.password.label(class="form__label") }}
+			{{ form.remember_me }}
+			{{ form.remember_me.label }}
 			<br><br>
 			{{ form.submit(class="btn btn__submit") }}
 			<br><br>
-			<a class="hint" href="/sign_up">Don't have an account yet? Get yours today!</a><br>
-			<a class="hint" href="/forgot">Forgot password?</a>
+			<a class="hint" href="{{ url_for('auth.sign_up') }}">Don't have an account yet? Get yours today!</a>
+			<a class="hint" href="{{ url_for('auth.login') }}">Forgot password?</a>
 			<!-- <label for="username">Username</label><br>
 			<input type="text" name="username" id=""><br>
 			<label for="password">Password</label><br>
