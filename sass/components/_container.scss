@@ -1,21 +1,8 @@
 .container {
+  @include absCenter;
   padding: 2.5rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 15px #ffffff;
+  box-shadow: 0 0 15px $color-white;
   border-radius: 1rem;
   background: transparent;
   text-align: left;
-
-  & input[type="text"],
-  & input[type="password"] {
-    outline: none;
-    border: 0.2rem black solid;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    width: 100%;
-    display: block;
-  }
 }

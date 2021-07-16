@@ -1,0 +1,13 @@
+.create {
+  &__card {
+    border: 1px solid $color-black;
+    border-radius: 1rem;
+    padding: 2rem;
+    background-color: beige;
+  }
+
+  &__title {
+    text-transform: uppercase;
+    display: block;
+  }
+}

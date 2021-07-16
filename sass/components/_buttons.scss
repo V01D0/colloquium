@@ -5,23 +5,23 @@
   display: inline-block;
 
   &__register {
-    color: white;
-    background-color: #0057ff;
+    color: $color-white;
+    background-color: $color-cta-blue;
   }
 
   &__login {
-    color: black;
-    background-color: white;
-    border: 1px #0057ff solid;
-    box-shadow: 0 0 10px #ccc;
+    color: $color-black;
+    background-color: $color-white;
+    border: 1px $color-cta-blue solid;
+    box-shadow: 0 0 10px $color-grey;
   }
 
   &__submit {
     border-radius: 1.5rem;
     border: none;
-    background: #0057ff;
+    background: $color-cta-blue;
     width: 100%;
     padding: 1rem;
-    color: white;
+    color: $color-white;
   }
 }

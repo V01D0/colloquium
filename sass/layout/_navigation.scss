@@ -1,6 +1,6 @@
 .nav-small {
   display: none;
-  @media only screen and (max-width: 1410px) {
+  @media only screen and (max-width: 88.125em) {
     list-style: none;
     text-align: center;
     display: block;
@@ -19,7 +19,7 @@
     }
   }
   &__item a {
-    color: white;
+    color: $color-white;
   }
 }
 
@@ -33,14 +33,14 @@ nav li {
   display: none;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 50em) {
   #navBtn {
     display: block;
     position: absolute;
     bottom: 5rem;
     right: 5rem;
-    color: rgb(101, 182, 47);
-    background: rgb(0, 0, 0);
+    color: $color-navbar-small;
+    background: $color-black;
     padding: 1rem;
     border-radius: 50%;
     height: 5rem;
@@ -49,14 +49,14 @@ nav li {
   }
 }
 
-@media only screen and (max-width: 1410px) and (min-width: 800px) {
+@media only screen and (max-width: 88.125em) and (min-width: 50em) {
   #navBtn {
     display: block;
     position: absolute;
     top: 2rem;
     right: 5rem;
-    color: rgb(101, 182, 47);
-    background: rgb(0, 0, 0);
+    color: $color-navbar-small;
+    background: $color-black;
     padding: 1rem;
     border-radius: 50%;
     height: 5rem;
@@ -69,12 +69,12 @@ nav li {
   width: 100%;
   display: flex;
   align-items: center;
-  position: fixed;
-  padding: 0.5rem 0;
-  background-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0px 15px 10px -15px #111;
+  position: relative;
+  padding: 0.5rem;
+  background-color: $color-white;
+  box-shadow: 0px 15px 10px -15px $color-black;
 
-  @media only screen and (max-width: 1410px) {
+  @media only screen and (max-width: 88.125em) {
     display: none;
   }
   & ul {
@@ -84,7 +84,7 @@ nav li {
 
   & li a {
     padding: 0 4rem;
-    color: black;
+    color: $color-black;
   }
 }
 
@@ -109,10 +109,13 @@ nav li {
   float: right;
   margin: auto 0.5rem;
   border-radius: 1.5rem;
-  color: black;
   position: relative;
 }
 
+.user-icon {
+  color: $color-black;
+  top: 0.5rem;
+}
 // @media only screen and (max-width: 1410px) {
 //   .nav-small {
 //     list-style: none;

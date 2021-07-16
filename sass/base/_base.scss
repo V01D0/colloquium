@@ -5,11 +5,19 @@
   padding: 0;
   box-sizing: inherit;
   scrollbar-width: thick;
-  scrollbar-color: rgb(255, 255, 255) rgb(90, 90, 90);
+  scrollbar-color: $color-white $color-grey;
 }
 
 html {
   font-size: 62.5%;
   width: 100%;
   height: 100%;
+
+  @media (max-width: 50.75em) {
+    font-size: 50%;
+  }
+
+  @media (min-width: 112.5em) {
+    font-size: 70%;
+  }
 }

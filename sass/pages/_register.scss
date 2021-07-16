@@ -4,11 +4,7 @@
     /* background: #20203a; */
     /* background: #197193; */
     /* background: url("images/register-bg.jpg"); */
-    background: linear-gradient(
-        135deg,
-        rgba(137, 126, 121, 0.5),
-        rgba(36, 46, 77, 0.5)
-      ),
+    background: linear-gradient(135deg, $color-gradient-1, $color-gradient-2),
       url("../images/register.jpg");
     background-size: cover;
     background-position: center;
