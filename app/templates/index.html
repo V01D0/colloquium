@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block title %} Colloquium {% endblock %}
 {% block content %}
-<h1>Hi there</h1>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<script>
+	toastr["{{ category }}"]("{{ message }}");
+</script>
+{% endfor %}
+{% endif %}
+{% endwith %}
 {% endblock %}
-
-
-</body>
-
-</html>
