@@ -1,17 +1,5 @@
 .register {
   &__background {
-    height: 100%;
-    /* background: #20203a; */
-    /* background: #197193; */
-    /* background: url("images/register-bg.jpg"); */
-    background: linear-gradient(
-        135deg,
-        rgba($color-black, 0.1),
-        rgba($color-black, 0.1)
-      ),
-      url("../images/register.jpg");
-    background-size: cover;
-    background-position: center;
-    width: 100%;
+    @include backgroundImage(url("../images/register.jpg"));
   }
 }
