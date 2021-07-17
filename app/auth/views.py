@@ -1,19 +1,15 @@
 from .forms import loginForm, signupForm, getMailForm
 from . import auth
-from flask import render_template, session, redirect, url_for
+from flask import render_template, session, redirect, url_for, request
 from flask.helpers import flash
 from .. import db
-from ..models import User, Role
+from ..models import User
 from flask_login import login_user, logout_user, login_required, current_user
 from ..email import send_email
 from app import models
 
 from app import email
 
-# @auth.before_app_first_request
-# def before_request():
-#     # CHANGE WHEN DEPLOYING
-#     Role.insert_roles()
 
 
 
@@ -27,20 +23,24 @@ def login():
         user = User.query.filter((User.email == form.username.data) | (User.username == form.username.data)).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me)
-            return redirect(url_for('main.index'))
+            next = request.args.get('next')
+            if next is None or not next.startswith('/'):
+                next = url_for('main.index')
+            return redirect(next)
         else:
             flash('Either your username or password are incorrect','error')
-            return redirect(url_for('.login'))
+    # else:
+    #     flash('Either your username or password are incorrect','error')
         # else:
         #     session['known'] = True
         # session['name'] = form.name.data
         # return redirect(url_for('.index'))
+    # elif request.method == 'POST':
+    #     flash('An error occured', 'error')
     return render_template('auth/login.html',form=form)
 
 @auth.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
-    # CHANGE WHEN DEPLOYING
-    Role.insert_roles()
     form = getMailForm()
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
@@ -65,9 +65,12 @@ def confirm(token):
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     email = models.confirm(token)
+    if not email:
+        flash('An error occured','error')
+        return redirect(url_for('main.index'))
     mail = User.query.filter_by(email=email).first()
     if mail is not None:
-        flash('An error occured','error')
+        flash('An error occured!','error')
         return redirect(url_for('main.index'))
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
