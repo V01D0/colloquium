@@ -7,6 +7,7 @@
     padding: 1rem;
     width: 100%;
     display: inline-block;
+    font-family: inherit;
 
     &:focus {
       outline: none;
@@ -19,7 +20,7 @@
     }
 
     &::placeholder {
-      color: $color-grey-dark;
+      color: $color-black;
     }
   }
 
@@ -37,5 +38,9 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(-4rem);
+  }
+
+  &__textarea {
+    resize: none;
   }
 }

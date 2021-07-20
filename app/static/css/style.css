@@ -118,6 +118,8 @@ body {
     width: 100%;
     padding: 1rem;
     color: #fff; }
+  .btn__create-blog {
+    width: 50%; }
 
 .container {
   position: absolute;
@@ -137,7 +139,8 @@ body {
   border-bottom: 3px solid transparent;
   padding: 1rem;
   width: 100%;
-  display: inline-block; }
+  display: inline-block;
+  font-family: inherit; }
   .form__input:focus {
     outline: none;
     box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.1);
@@ -145,7 +148,7 @@ body {
     .form__input:focus:invalid {
       border-bottom: 3px solid #ff3030; }
   .form__input::placeholder {
-    color: #777; }
+    color: #000; }
 
 .form__label {
   font-size: 1.2rem;
@@ -160,6 +163,9 @@ body {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-4rem); }
+
+.form__textarea {
+  resize: none; }
 
 .nav-small {
   display: none; }
