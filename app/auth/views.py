@@ -1,4 +1,4 @@
-from .forms import loginForm, signupForm, getMailForm
+from .forms import LoginForm, SignupForm, GetMailForm
 from . import auth
 from flask import render_template, session, redirect, url_for, request
 from flask.helpers import flash
@@ -15,7 +15,7 @@ from app import email
 
 @auth.route('/login', methods=['GET','POST'])
 def login():
-    form = loginForm()
+    form = LoginForm()
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     if form.validate_on_submit():
@@ -29,19 +29,11 @@ def login():
             return redirect(next)
         else:
             flash('Either your username or password are incorrect','error')
-    # else:
-    #     flash('Either your username or password are incorrect','error')
-        # else:
-        #     session['known'] = True
-        # session['name'] = form.name.data
-        # return redirect(url_for('.index'))
-    # elif request.method == 'POST':
-    #     flash('An error occured', 'error')
     return render_template('auth/login.html',form=form)
 
 @auth.route('/sign_up', methods=['GET', 'POST'])
 def sign_up():
-    form = getMailForm()
+    form = GetMailForm()
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     if form.validate_on_submit():
@@ -61,7 +53,7 @@ def sign_up():
 
 @auth.route('/confirm/<token>', methods=['GET', 'POST'])
 def confirm(token):
-    form = signupForm()
+    form = SignupForm()
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
     email = models.confirm(token)
@@ -84,36 +76,6 @@ def confirm(token):
         flash('An error occured','error')
         return redirect(url_for('main.index'))
     return render_template('auth/sign_up.html',form=form)
-
-
-# @auth.route('/sign_up', methods=['GET', 'POST'])
-# def sign_up():
-#     form = signupForm()
-#     if form.validate_on_submit():
-#         user = User.query.filter_by(username=form.username.data).first()
-#         if user is None:
-#             session['temp_user'] = form.username.data
-#             session['password'] = form.password.data
-#             return redirect(url_for('.get_user_mail', username=form.username.data))
-#         else:
-#             flash("Username unavailable")
-#             return redirect(url_for('.sign_up'))
-#     return render_template('auth/sign_up.html',form=form)
-
-# @auth.route('/email_verification', methods=['GET', 'POST'])
-# def get_user_mail():
-#         form = getMailForm()
-#         if form.validate_on_submit():
-#             user = User.query.filter_by(username=session['temp_user'])
-#             if user is None:
-#                 user = User(username = session['temp_user'], password = session['password'], email=form.email.data)
-#                 print(user)
-#                 db.session.add(user)
-#                 db.session.commit()
-#                 print("Yes")
-#         else:
-#             print("no")
-#         return render_template('auth/get_mail.html', form=form)
 
 @auth.route('/logout')
 @login_required
