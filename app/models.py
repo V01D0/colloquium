@@ -3,18 +3,18 @@ from werkzeug import check_password_hash, generate_password_hash
 from flask_login import UserMixin
 from flask import current_app
 from . import login_manager
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from authlib.jose import jwt
+from random import choice
+import string
 
 
-
-class User(UserMixin, db.Model):
+class Users(UserMixin, db.Model):
     """ Table that handles the User's username, password, email """
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=True,index=True)
+    email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128),nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    password_hash = db.Column(db.String(128), nullable=False)
 
     @property
     def password(self):
@@ -25,40 +25,64 @@ class User(UserMixin, db.Model):
         self.password_hash = generate_password_hash(password)
 
     def verify_password(self, password):
+        """ Function to verify password with hash in DB """
         return check_password_hash(self.password_hash, password)
 
-    def generate_confirmation_token(self, expiration=1200):
-        s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'confirm': self.email}).decode('utf-8')
-
+    def generate_confirmation_token(self):
+        """ Function that returns a JWT """
+        header = {'alg': 'RS256'}
+        payload = {'confirm': self.email}
+        with open('jwt-key') as privkey:
+            privkey = privkey.read()
+        s = jwt.encode(header, payload, privkey).decode('utf-8')
+        return s
 
     def __repr__(self):
         return '<User %r>' % self.username
 
 
-class CommunitiesInfo(db.Model):
-    """ Info about each community """
-    __tablename__ = 'communities_information'
+class BlogsInfo(db.Model):
+    """ Info about each blog """
+    __tablename__ = 'blogs_information'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), unique=True, index=True)
 
-class Communities(db.Model):
-    """ Communities that a user is subscribed to """
-    __tablename__ = 'communities'
+
+class Blogs(db.Model):
+    """ Blogs that a user is subscribed to """
+    __tablename__ = 'blogs'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    name = db.Column(db.String(64), db.ForeignKey('communities_information.name'))
+    name = db.Column(db.String(64), db.ForeignKey('blogs_information.name'))
+
+
+def gen_post_id(length=6):
+    """ Function to generate random post id """
+    return ''.join(choice(string.ascii_letters + string.digits) for _ in range(length))
+
+
+class Posts(db.Model):
+    """ All posts """
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.String(12), unique=True)
+    post_author = db.Column(db.Integer, db.ForeignKey('users.id'))
+    post_title = db.Column(db.String(256))
+    post_body = db.Column(db.String)
+
 
 def confirm(token):
-    s = Serializer(current_app.config['SECRET_KEY'])
+    """ Function to verify JWT """
+    with open('jwt-key.pub') as pubkey:
+        pubkey = pubkey.read()
     try:
-        data = s.loads(token.encode('utf-8'))
+        claims = jwt.decode(token, pubkey)
+        return claims['confirm']
     except:
         return False
-    return data.get('confirm')
+
 
 @login_manager.user_loader
 def load_user(user_id):
-    print(user_id)
-    return User.query.get(int(user_id))
-
+    """ Function that returns user id """
+    return Users.query.get(int(user_id))
