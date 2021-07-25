@@ -34,7 +34,7 @@ class Users(UserMixin, db.Model):
         """ Function that returns a JWT """
         token = create_access_token(self.email)
         return token
-        
+
     def __repr__(self):
         return '<User %r>' % self.username
 
