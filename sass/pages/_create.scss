@@ -1,5 +1,6 @@
 .create {
   &__card {
+    height: 40rem;
     border: 1px solid $color-black;
     border-radius: 1rem;
     padding: 2rem;
@@ -9,5 +10,32 @@
   &__title {
     text-transform: uppercase;
     display: block;
+  }
+}
+
+.user {
+  &__list {
+    border: 1px $color-black solid;
+    border-radius: 3px;
+    padding: 1rem;
+    text-align: left;
+    overflow: auto;
+    height: auto;
+    max-height: 25rem;
+  }
+
+  & {
+    display: block;
+  }
+
+  &__checkbox {
+    float: right;
+    position: relative;
+    top: 1.5rem;
+
+    &::before {
+      color: black;
+      content: "INVITE";
+    }
   }
 }
