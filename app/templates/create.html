@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Colloquium - Create a blog{% endblock %}
+{% block content %}
+<section>
+	<div class="u-center-text u-margin-bottom-big u-margin-top-medium">
+		<h2>Create a blog!</h2>
+	</div>
+	<form method="post">
+		{{ form.csrf_token }}
+		<div class="row u-center-text">
+			<div class="col-1-of-3 create__card">
+				<h3 class="create__title">Name your blog</h3>
+				{{ form.blog_name(class="form__input",placeholder="Name of the blog") }}
+				{{ form.blog_name.label(class="form__label") }}
+				<h4 class="create__title">Describe your blog</h4>
+				{{ form.description(class="form__input form__textarea", placeholder="Describe your blog", rows="7") }}
+				{{ form.description.label(class="form__label") }}
+			</div>
+			<div class="col-1-of-3 create__card">
+				<h3 class="create__title">Invite people</h3>
+				{{ form.invite_list(class="form__input", id="autoComplete", placeholder="Invite a friend or two",
+				oninput="getLikeUsers(this.value)", pattern="^[A-Za-z][A-Za-z0-9_.]*$") }}
+				{{ form.invite_list.label(class="form__label", id="autoComplete-label") }}
+			</div>
+			<div class="col-1-of-3 create__card">
+				<h3 class="create__title">Who can post here?</h3>
+
+			</div>
+		</div>
+		<div class="row u-center-text">
+			{{ form.submit(class="btn btn__submit btn__create-blog") }}
+		</div>
+	</form>
+</section>
+{% endblock %}
