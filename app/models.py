@@ -1,12 +1,14 @@
 from . import db
-from werkzeug import check_password_hash, generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
-from flask import current_app
+from flask import current_app, request
 from . import login_manager
-from authlib.jose import jwt
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import decode_token
 from random import choice
 import string
-
+from datetime import datetime, timedelta
+from flask_jwt_extended import jwt_required
 
 class Users(UserMixin, db.Model):
     """ Table that handles the User's username, password, email """
@@ -30,13 +32,9 @@ class Users(UserMixin, db.Model):
 
     def generate_confirmation_token(self):
         """ Function that returns a JWT """
-        header = {'alg': 'RS256'}
-        payload = {'confirm': self.email}
-        with open('jwt-key') as privkey:
-            privkey = privkey.read()
-        s = jwt.encode(header, payload, privkey).decode('utf-8')
-        return s
-
+        token = create_access_token(self.email)
+        return token
+        
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -70,19 +68,16 @@ class Posts(db.Model):
     post_title = db.Column(db.String(256))
     post_body = db.Column(db.String)
 
-
 def confirm(token):
-    """ Function to verify JWT """
-    with open('jwt-key.pub') as pubkey:
-        pubkey = pubkey.read()
     try:
-        claims = jwt.decode(token, pubkey)
-        return claims['confirm']
+        decoded_token = decode_token(token)
+        email = decoded_token['sub']
+        return email
     except:
         return False
 
 
-@login_manager.user_loader
+@ login_manager.user_loader
 def load_user(user_id):
     """ Function that returns user id """
     return Users.query.get(int(user_id))
