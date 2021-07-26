@@ -1,6 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Colloquium - Create a blog{% endblock %}
 {% block content %}
+{% if form.blog_name.errors %}
+{% for error in form.blog_name.errors %}
+<script>
+	var notyf = new Notyf();
+	notyf.error("{{ error }}");
+</script>
+{% endfor %}
+{% endif %}
+{% if form.invite_list.errors %}
+{% for error in form.invite_list.errors %}
+<script>
+	var notyf = new Notyf();
+	notyf.error("{{ error }}");
+</script>
+{% endfor %}
+{% endif %}
+{% if form.posters.errors %}
+{% for error in form.posters.errors %}
+<script>
+	var notyf = new Notyf();
+	notyf.error("{{ error }}");
+</script>
+{% endfor %}
+{% endif %}
 <section>
 	<div class="u-center-text u-margin-bottom-big u-margin-top-medium">
 		<h2>Create a blog!</h2>
@@ -9,22 +33,29 @@
 		{{ form.csrf_token }}
 		<div class="row u-center-text">
 			<div class="col-1-of-3 create__card">
-				<h3 class="create__title">Name your blog</h3>
-				{{ form.blog_name(class="form__input",placeholder="Name of the blog") }}
+				<h3 class="create__title u-margin-bottom-small">Name your blog</h3>
+				{{ form.blog_name(class="form__input",placeholder="Name of the blog", pattern="^[a-zA-Z0-9-_]*$", minlength="3", maxlength="32") }}
 				{{ form.blog_name.label(class="form__label") }}
-				<h4 class="create__title">Describe your blog</h4>
+				<h4 class="create__title u-margin-bottom-small">Describe your blog</h4>
 				{{ form.description(class="form__input form__textarea", placeholder="Describe your blog", rows="7") }}
 				{{ form.description.label(class="form__label") }}
 			</div>
 			<div class="col-1-of-3 create__card">
-				<h3 class="create__title">Invite people</h3>
+				<h3 class="create__title u-margin-bottom-small">Invite people</h3>
 				{{ form.invite_list(class="form__input", id="autoComplete", placeholder="Invite a friend or two",
 				oninput="getLikeUsers(this.value)", pattern="^[A-Za-z][A-Za-z0-9_.]*$") }}
 				{{ form.invite_list.label(class="form__label", id="autoComplete-label") }}
+				{{ form.added_users(class="users__added") }}
 			</div>
 			<div class="col-1-of-3 create__card">
-				<h3 class="create__title">Who can post here?</h3>
-
+				<h3 class="create__title u-margin-bottom-small">Who can post here?</h3>
+				{% for subfield in form.posters %}
+				<tr>
+					<td>{{ subfield }}</td>
+					<td>{{ subfield.label }}</td>
+					<br>
+				</tr>
+				{% endfor %}
 			</div>
 		</div>
 		<div class="row u-center-text">

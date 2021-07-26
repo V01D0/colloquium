@@ -5,7 +5,8 @@
 {% if messages %}
 {% for category, message in messages %}
 <script>
-	toastr["{{ category }}"]("{{ message }}");
+	var notyf = new Notyf();
+	notyf.{{ category }}("{{ message }}");
 </script>
 {% endfor %}
 {% endif %}
