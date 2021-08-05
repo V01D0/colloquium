@@ -9,6 +9,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     SECRET_KEY = os.environ.get("SECRET_KEY")
+    REMEMBER_COOKIE_DURATION = timedelta(days=30)
+    REMEMBER_COOKIE_HTTPONLY = True
     # MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.googlemail.com')
     # MAIL_PORT = int(os.environ.get('MAIL_PORT', '587'))
     # MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in \
@@ -19,10 +21,15 @@ class Config(object):
     # COLLOQUIUM_MAIL_SENDER = 'Colloquium Admin <noreply@colloquium.name>'
     COLLOQUIUM_ADMIN = os.environ.get("COLLOQUIUM_ADMIN")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_COOKIE_SECURE = False
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=1)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=30)
-    JWT_TOKEN_LOCATION = ["cookies"]
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=5)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=15)
+    # JWT_ACCESS_TOKEN_EXPIRES = timedelta(seconds=10)
+    # JWT_REFRESH_TOKEN_EXPIRES = timedelta(seconds=30)
+    JWT_COOKIE_CSRF_PROTECT = True
+    # JWT_ACCESS_CSRF_HEADER_NAME = "X-CSRF-TOKEN-ACCESS"
+    # JWT_REFRESH_CSRF_HEADER_NAME = "X-CSRF-TOKEN-REFRESH"
+    JWT_TOKEN_LOCATION = ["headers", "cookies"]
+    PROPAGATE_EXCEPTIONS = True
 
     @staticmethod
     def init_app(app):
@@ -34,6 +41,7 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         "DEV_DATABASE_URL"
     ) or "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
+    JWT_COOKIE_SECURE = False
 
 
 class TestingConfig(Config):
