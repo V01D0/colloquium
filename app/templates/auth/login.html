@@ -12,27 +12,6 @@
 	{% endfor %}
 	{% endif %}
 	{% endwith %}
-	{% if form.username.errors %}
-	{% for error in form.username.errors %}
-	<script>
-		var notyf = new Notyf();
-		notyf.error("{{ error }}");
-	</script>
-	{% endfor %}
-	{% endif %}
-	{% if form.password.errors %}
-	{% for error in form.password.errors %}
-	<script>
-		var notyf = new Notyf();
-		notyf.error("{{ error }}");
-		// notyf.error({
-		// 	message: "{{ error }}",
-		// 	duration: 1000000,
-  		// 	icon: false
-		// });
-	</script>
-	{% endfor %}
-	{% endif %}
 	<div class="container">
 		<h3 class="heading">Login</h3>
 		<form method="post">

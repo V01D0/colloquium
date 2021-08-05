@@ -1,19 +1,15 @@
 {% extends "base.html" %}
 {% block title %}E-mail verification{% endblock %}
 {% block content %}
+{% for field in form.errors %}
+{% for error in form.errors[field] %}
+<script>
+	var notyf = new Notyf();
+	notyf.error("{{ error }}");
+</script>
+{% endfor %}
+{% endfor %}
 <div class="register__background">
-	{% for message in get_flashed_messages() %}
-	<script>
-		toastr["error"]("{{ message }}");
-	</script>
-	{% endfor %}
-	{% if form.email.errors %}
-	{% for error in form.email.errors %}
-	<script>
-		toastr["error"]("{{ error }}");
-	</script>
-	{% endfor %}
-	{% endif %}
 	<div class="container">
 		<h3 class="heading">Please provide your E-mail so we can send you a registration link</h3>
 		<form method="post">
