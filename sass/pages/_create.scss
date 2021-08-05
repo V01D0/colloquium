@@ -1,10 +1,10 @@
 .create {
   &__card {
-    height: 40rem;
+    height: 42rem;
     border: 1px solid $color-black;
-    border-radius: 1rem;
-    padding: 2rem;
-    background-color: beige;
+    border-radius: $border-radius-default;
+    padding: 1rem;
+    background-color: $color-grey-main;
   }
 
   &__title {
@@ -16,7 +16,7 @@
 .user {
   &__list {
     border: 1px $color-black solid;
-    border-radius: 3px;
+    border-radius: $border-radius-default;
     padding: 1rem;
     text-align: left;
     overflow: auto;
@@ -32,10 +32,5 @@
     float: right;
     position: relative;
     top: 1.5rem;
-
-    &::before {
-      color: black;
-      content: "INVITE";
-    }
   }
 }

@@ -2,7 +2,7 @@
   &__input {
     outline: none;
     border: none;
-    border-radius: 3px;
+    border-radius: $border-radius-default;
     border-bottom: 3px solid transparent;
     padding: 1rem;
     width: 100%;

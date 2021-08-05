@@ -25,3 +25,8 @@
   background-position: center;
   width: 100%;
 }
+
+@mixin iconRules {
+  margin-left: $border-radius-default;
+  border-radius: $border-radius-default;
+}

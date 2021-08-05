@@ -1,0 +1,104 @@
+.blog {
+  &__header {
+    background-color: $color-blog-dark;
+    color: $color-white;
+    height: 30%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  &__sidebar-container {
+    display: flex;
+    flex-flow: row wrap;
+    position: absolute;
+    padding: 5rem;
+    right: 0;
+  }
+
+  &__sidebar {
+    background-color: $color-white;
+    border: 1px solid $color-black;
+    flex: 0 0 100%;
+    border-radius: $border-radius-default;
+    height: auto;
+    padding: 2rem;
+    width: 15rem;
+    z-index: 1;
+  }
+}
+
+.post {
+  display: flex;
+  flex-flow: column wrap;
+  height: 80%;
+  align-items: center;
+  padding: 5rem;
+  background-color: $color-grey-main;
+
+  &__row {
+    background-color: $color-white;
+    width: 50%;
+    border: 1px solid $color-black;
+    border-radius: $border-radius-default;
+    margin-bottom: 2rem;
+    height: 10rem;
+    display: flex;
+
+    &--create {
+      height: 7rem;
+    }
+  }
+
+  &__title {
+    padding: 0 1rem;
+  }
+}
+
+.icon {
+  position: absolute;
+  display: flex;
+  align-self: flex-end;
+  flex-flow: row nowrap;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+
+  &__comment {
+    display: flex;
+    height: auto;
+
+    &::after {
+      display: flex;
+      align-self: center;
+      content: "comment";
+      @include iconRules;
+    }
+
+    &:hover,
+    &:hover::after {
+      content: "comment";
+      background: $color-grey-main;
+      border-radius: $border-radius-default;
+    }
+  }
+
+  &__share {
+    height: auto;
+    display: flex;
+    position: relative;
+    left: 10rem;
+
+    &::after {
+      content: "share";
+      @include iconRules;
+    }
+
+    &:hover,
+    &:hover::after {
+      content: "share";
+      background: $color-grey-main;
+    }
+  }
+}
