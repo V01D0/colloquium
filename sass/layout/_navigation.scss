@@ -70,11 +70,11 @@ nav li {
   display: flex;
   align-items: center;
   position: fixed;
-  height: 7%;
   z-index: 1;
   padding: 0.5rem;
-  background-color: $color-f;
+  background-color: rgba($color: $color-f, $alpha: 0.8);
   box-shadow: 0px 15px 10px -15px $color-black;
+  top: 0;
 
   @media only screen and (max-width: 88.125em) {
     display: none;
