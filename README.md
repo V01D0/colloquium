@@ -1,6 +1,6 @@
 # colloquium
 
-FOSS privacy respecting social media platform
+FOSS **privacy respecting, ethical** social media platform
 
 #### This project is a thought experiment of mine that I've wanted to pursue for a while.
 
