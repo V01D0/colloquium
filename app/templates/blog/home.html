@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - Colloquium{% endblock %}
+{% block content %}
+<div class="blog__header">
+	<h1 class="u-center-text">{{ title }}</h1>
+</div>
+<div class="blog__sidebar-container">
+	<div class="blog__sidebar u-margin-bottom-medium">
+		<h3 class="u-center-text">About {{ title }}</h3>
+		<hr>
+		{{ description|escape|linebreaks }}
+	</div>
+	<div class="blog__sidebar u-margin-bottom-medium">
+		<h3 class="u-center-text">Blogs like {{ title }}</h3>
+		<hr>
+	</div>
+</div>
+<div class="post">
+	{% if current_user.is_authenticated %}
+	<!-- <div class="post--create"> -->
+        <div onclick="window.location.href='{{ url_for('main.submit_post') }}'" class="post__row post__row--create">
+			<h4 class="post__title">Create post</h4>
+		</div>
+        <div class="post__row">
+			<h3 class="post__title">Some title here</h3>
+			<div class="icon">
+				<span class="icon__comment feather">
+					<object class="" data="{{ url_for('static', filename='icons/message-square.svg') }}" type=""></object>
+				</span>
+				<span class="icon__share feather">
+					<object class="" data="{{ url_for('static', filename='icons/share.svg') }}" type=""></object>
+				</span>
+			</div>
+		</div>
+        <div class="post__row">
+			<h3 class="post__title">Some title here</h3>
+			<div class="icon">
+				<span class="icon__comment feather">
+					<object class="" data="{{ url_for('static', filename='icons/message-square.svg') }}" type=""></object>
+				</span>
+				<span class="icon__share feather">
+					<object class="" data="{{ url_for('static', filename='icons/share.svg') }}" type=""></object>
+				</span>
+			</div>
+		</div>
+        <!-- <div class="posts__row">Five</div>
+        <div class="posts__row">Six</div>
+        <div class="posts__row">Seven</div>
+        <div class="posts__row">Eight</div>
+        <div class="posts__row">Nine</div>
+        <div class="posts__row">Ten</div> -->
+	<!-- </div> -->
+	{% endif %}
+	<!-- <div class="post--create">
+		Create post
+	</div>
+	<div class="post--create">
+		Create post
+	</div>
+	<div class="post--create">
+		Create post
+	</div>
+	<div class="blog__sidebar u-margin-bottom-medium">
+		<h3 class="u-center-text">About {{ title }}</h3>
+		<hr>
+		{{ description|escape|linebreaks }}
+	</div>
+	<div class="blog__sidebar u-margin-bottom-medium">
+		<h3 class="u-center-text">Blogs like {{ title }}</h3>
+		<hr>
+	</div>
+	<div class="blog__sidebar"></div> -->
+	<!-- <div class="post--create">
+		Create post
+	</div>
+	<div class="post--create">
+		Create post
+	</div>
+	<div class="post--create">
+		Create post
+	</div>
+	<div class="post--create">
+		Create post
+	</div> -->
+</div>
+{% endblock %}
