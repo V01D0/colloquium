@@ -1,43 +1,29 @@
 {% extends "base.html" %}
 {% block title %}Colloquium - Create a blog{% endblock %}
 {% block content %}
-{% if form.blog_name.errors %}
-{% for error in form.blog_name.errors %}
-<script>
-	var notyf = new Notyf();
-	notyf.error("{{ error }}");
-</script>
-{% endfor %}
-{% endif %}
-{% if form.invite_list.errors %}
-{% for error in form.invite_list.errors %}
-<script>
-	var notyf = new Notyf();
-	notyf.error("{{ error }}");
-</script>
-{% endfor %}
-{% endif %}
-{% if form.posters.errors %}
-{% for error in form.posters.errors %}
-<script>
-	var notyf = new Notyf();
-	notyf.error("{{ error }}");
-</script>
-{% endfor %}
-{% endif %}
 <section>
-	<div class="u-center-text u-margin-bottom-big u-margin-top-medium">
+	{% for field in form.errors %}
+	{% for error in form.errors[field] %}
+	<script>
+		var notyf = new Notyf();
+		notyf.error("{{ error }}");
+	</script>
+	{% endfor %}
+	{% endfor %}
+	<div class="u-center-text u-margin-bottom-big u-margin-top-big">
 		<h2>Create a blog!</h2>
 	</div>
-	<form method="post">
+	<form method="post" oninput="validateBase()">
 		{{ form.csrf_token }}
 		<div class="row u-center-text">
 			<div class="col-1-of-3 create__card">
 				<h3 class="create__title u-margin-bottom-small">Name your blog</h3>
-				{{ form.blog_name(class="form__input",placeholder="Name of the blog", pattern="^[a-zA-Z0-9-_]*$", minlength="3", maxlength="32") }}
+				{{ form.blog_name(class="form__input required",placeholder="Name of the blog", id="blogname" ,pattern="^[a-zA-Z0-9-_]*$", minlength="3", maxlength="32",oninput="checkBlog(this.value)") }}
 				{{ form.blog_name.label(class="form__label") }}
+				{{ form.heading(class="form__input required", placeholder="Heading/Title", oninput="checkEmpty(this)") }}
+				{{ form.heading.label(class="form__label") }}
 				<h4 class="create__title u-margin-bottom-small">Describe your blog</h4>
-				{{ form.description(class="form__input form__textarea", placeholder="Describe your blog", rows="7") }}
+				{{ form.description(class="form__input form__textarea required", placeholder="Describe your blog", rows="5", oninput="checkEmpty(this)") }}
 				{{ form.description.label(class="form__label") }}
 			</div>
 			<div class="col-1-of-3 create__card">
@@ -49,13 +35,15 @@
 			</div>
 			<div class="col-1-of-3 create__card">
 				<h3 class="create__title u-margin-bottom-small">Who can post here?</h3>
-				{% for subfield in form.posters %}
-				<tr>
-					<td>{{ subfield }}</td>
-					<td>{{ subfield.label }}</td>
-					<br>
-				</tr>
-				{% endfor %}
+				<table style="display: flex;justify-content: center;">
+					{% for subfield in form.posters %}
+					<tr>
+						<td>{{ subfield }}</td>
+						<td>{{ subfield.label }}</td>
+						<!-- <br> -->
+					</tr>
+					{% endfor %}
+				</table>
 			</div>
 		</div>
 		<div class="row u-center-text">
