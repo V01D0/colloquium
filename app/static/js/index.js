@@ -85,12 +85,17 @@ const checkEmpty = function (element) {
   } else element.setCustomValidity("");
 };
 
-const validateBase = function () {
+const validateBase = function (blogs = false) {
   // Validate all inputs with class "required"
   const inputs = Array.from(document.querySelectorAll(".required"));
   const isValid = inputs.every((input) => input.checkValidity());
-  if (isValid) enableButton();
-  else disableButton();
+  if (isValid && !blogs) enableButton();
+  // if all inputs are valid and blogs var is false (default) - enable button
+  else if (isValid && blogs === true) {
+    if (Blogs.length < 1) disableButton();
+    // If Blogs array is empty - disable button
+    else enableButton(); // else - enable button
+  } else disableButton();
 };
 
 const generateUserString = function (
@@ -257,4 +262,19 @@ const checkUser = function (checkbox, type) {
       addedUsers.value = element;
     }
   });
+};
+
+const switchTabs = function () {
+  // Function to swtitch between tabs in a tabbed component
+  const caller = event.target;
+  const activeClass = "tab__item--active";
+  const tabs = Array.from(document.querySelectorAll(".tab__item"));
+  const index = tabs.findIndex((element) =>
+    element.classList.contains(activeClass)
+  );
+
+  if (caller !== tabs[index]) {
+    tabs[index].classList.remove(activeClass);
+    caller.classList.add(activeClass);
+  }
 };
