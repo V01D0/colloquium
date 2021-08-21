@@ -21,7 +21,7 @@ class Config(object):
     # COLLOQUIUM_MAIL_SENDER = 'Colloquium Admin <noreply@colloquium.name>'
     COLLOQUIUM_ADMIN = os.environ.get("COLLOQUIUM_ADMIN")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=5)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(hours=12)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=15)
     # JWT_ACCESS_TOKEN_EXPIRES = timedelta(seconds=10)
     # JWT_REFRESH_TOKEN_EXPIRES = timedelta(seconds=30)
@@ -30,6 +30,7 @@ class Config(object):
     # JWT_REFRESH_CSRF_HEADER_NAME = "X-CSRF-TOKEN-REFRESH"
     JWT_TOKEN_LOCATION = ["headers", "cookies"]
     PROPAGATE_EXCEPTIONS = True
+    UPLOADED_PHOTOS = "static"
 
     @staticmethod
     def init_app(app):
@@ -42,7 +43,7 @@ class DevelopmentConfig(Config):
         "DEV_DATABASE_URL"
     ) or "sqlite:///" + os.path.join(basedir, "data-dev.sqlite")
     JWT_COOKIE_SECURE = False
-
+    JWT_COOKIE_CSRF_PROTECT = False
 
 class TestingConfig(Config):
     TESTING = True
