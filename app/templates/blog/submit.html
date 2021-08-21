@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Colloquium - Create a post{% endblock %}
+{% block content %}
+<div class="post post__submit">
+	<div class="post__row post__create">
+		<div class="tab">
+			<div class="tab__item tab__item--active" id="review" onclick="switchTabs();">Review</div>
+			<div class="tab__item" id="preview" onclick="switchTabs();">Preview</div>
+		</div>
+		<form method="post" oninput="validateBase(true);">
+			{{ form.csrf_token }}
+			<h4 class="post__title">Create post on </h4>
+			{{ form.blogs(class="form__input", placeholder="Select the blogs you'd like to share this to", oninput="getLikeBlogs(this.value)") }}
+			{{ form.blogs.label(class="form__label blogs__label") }}
+			{{ form.added_blogs(class="users__added") }}
+			{{ form.title(class="form__input required", id="title", placeholder="Your post title", minlength="1", maxlength="100", oninput="checkEmpty(this)") }}
+			{{ form.title.label(class="form__label") }}
+			<div class="post__body">
+				<div class="post__body--text">
+					{{ form.body(class="form__textarea form__input required", id="body", placeholder="Your post body", minlength="1", oninput="checkEmpty(this)",style="height: 25rem;") }}
+					{{ form.body.label(class="form__label") }}	
+				</div>
+				<div class="post__items">
+					<div class="post__embed post__embed--file" id="fileUpload">
+						<input type="file" class="filedrag" onchange="handleFiles(this.files)" multiple accept="image/*">
+						<img src="{{ url_for('static', filename='icons/image.svg') }}" alt="file upload icon" srcset="">
+					</div>
+					<div class="post__embed post__embed--link">
+						<img src="{{ url_for('static', filename='icons/link.svg') }}" alt="embed a link icon" srcset="">
+					</div>
+				</div>
+			</div>
+			{{ form.submit(class="btn btn__submit u-margin-top-medium") }}
+		</form>
+		<div class="post__preview"></div>
+	</div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+	window.onload = function () {
+		const fileUpload = document.getElementById("fileUpload");
+		fileUpload.addEventListener("click", openInput);
+		const dropArea = document.querySelector(".post__embed--file");
+		['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+			dropArea.addEventListener(eventName, preventDefaults, false)
+		});	
+		dropArea.addEventListener("drop", handleDrop, false);
+	};
+</script>
+{% endblock %}
