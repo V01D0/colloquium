@@ -7,16 +7,11 @@
   &__item {
     flex: 1;
     padding: 2rem 0;
-    // padding-top: 2rem;
-    // border-left: 1px solid $color-black;
-    // border-right: 1px solid $color-black;
 
     &:not(&--active) {
       transition: all 0.2s ease-out;
       background-color: $color-grey-main;
       outline: black 1px solid;
-      //   border-left: 1px solid $color-black;
-      //   border-bottom: 1px solid $color-black;
     }
   }
 }
