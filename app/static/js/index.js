@@ -1,6 +1,13 @@
 "use strict";
 const usernames = new Array();
 const Blogs = new Array();
+const imageURLs = new Array();
+// const uploadProgress = new Array();
+
+const handleErrors = function (err = "An error occurred") {
+  const notyf = new Notyf();
+  notyf.error(err);
+};
 
 const expandNav = function () {
   // Navigation
@@ -60,7 +67,8 @@ const checkUsernameInDB = function (username) {
       } else {
         document.getElementById("username").setCustomValidity("");
       }
-    });
+    })
+    .catch((error) => handleErrors(error));
 };
 
 const validateSignup = function () {
@@ -129,7 +137,7 @@ const getLikeUsers = function (friend) {
   }
   const users = document.querySelector(".user__list");
   if (friend.trim() !== "") {
-    if (friend.length < 3) {
+    if (friend.trim().length < 3) {
       users.innerHTML = `NEED AT LEAST 3 CHARACTERS`;
       users.style.fontWeight = 300;
       users.style.border = "none";
@@ -160,7 +168,8 @@ const getLikeUsers = function (friend) {
               );
             }
           });
-        });
+        })
+        .catch((error) => handleErrors(error));
       if (users != null) {
         users.style.border = "1px solid black";
       }
@@ -183,7 +192,7 @@ const getLikeBlogs = function (blogName) {
   }
   const blogs = document.querySelector(".user__list");
   if (blogName.trim() !== "") {
-    if (blogName.length < 3) {
+    if (blogName.trim().length < 3) {
       blogs.innerHTML = `NEED AT LEAST 3 CHARACTERS`;
       blogs.style.fontWeight = 300;
       blogs.style.border = "none";
@@ -217,7 +226,8 @@ const getLikeBlogs = function (blogName) {
               }
             });
           }
-        });
+        })
+        .catch((error) => handleErrors(error));
       if (blogs != null) {
         blogs.style.border = "1px solid black";
       }
@@ -230,7 +240,7 @@ const getLikeBlogs = function (blogName) {
 
 const checkBlog = function (blogName) {
   // Function to check if blogName is available
-  if (blogName.length >= 3) {
+  if (blogName.trim().length >= 3) {
     const req = fetch(`/api/v1/blog/check?blog=${blogName}`)
       .then((response) => response.json())
       .then((data) => {
@@ -242,7 +252,8 @@ const checkBlog = function (blogName) {
         } else {
           document.getElementById("blogname").setCustomValidity("");
         }
-      });
+      })
+      .catch((error) => handleErrors(error));
   }
 };
 
@@ -264,6 +275,65 @@ const checkUser = function (checkbox, type) {
   });
 };
 
+const fillPreview = function () {
+  const preview = document.querySelector(".post__preview");
+  preview.innerHTML = "";
+  preview.style.display = "block";
+  // /^\[!image\(\w+\.(jpe?g|png)\)]$/gmi
+  const imageRegex = /^\[!image\(\w+\.(?:jpe?g|png|gif)\)]$/gim;
+  const title = document.getElementById("title"); // HTML Input element where user types
+  const body = document.getElementById("body"); // Textarea where user types
+  console.log(body.value);
+  console.log(body.value.replace(/\n+$/, ""));
+  // console.log(body.value);
+  const prevTitle = document.createElement("h1"); // Preview div title
+  prevTitle.classList.add("preview__title");
+  prevTitle.contentEditable = "true";
+  const prevBody = document.createElement("div"); // Preview div body
+  prevBody.contentEditable = "true";
+  prevBody.style.marginTop = "1rem";
+  prevBody.classList.add("preview__body");
+
+  let previewBodyText = body.value; // All text inside the textarea
+  prevTitle.innerText = title.value;
+  preview.appendChild(prevTitle);
+  preview.appendChild(prevBody);
+  console.log(body.value);
+  body.value
+    .replace(/\n+$/, "")
+    .replace(/\r\n|\r|\n/gi, "<br/>")
+    .split("<br/>")
+    .forEach((element) => {
+      // console.log(element);
+      if (element.trim() !== "") {
+        const words = element.split(/\s+/);
+        // console.log(words);
+        const tag = document.createElement("p");
+        tag.innerText = element;
+        prevBody.append(tag);
+        const match = words.find((word) => word.match(imageRegex));
+        if (match) {
+          const path = element
+            .match(/\(.*\)/gm)
+            .toString()
+            .slice(1, -1);
+          const img = document.createElement("img");
+          console.log(img);
+          img.src = `/static/images/uploads/${path}`;
+          img.classList.add("post__preview--image");
+          tag.insertAdjacentElement("afterend", img);
+          img.onload = function () {
+            const [width, height] = [img.width, img.height];
+          };
+        }
+      } else {
+        prevBody.innerHTML += "<br/>";
+        // console.log(prevBody.innerHTML);
+      }
+    });
+  console.log(prevBody.innerHTML);
+};
+
 const switchTabs = function () {
   // Function to swtitch between tabs in a tabbed component
   const caller = event.target;
@@ -276,5 +346,100 @@ const switchTabs = function () {
   if (caller !== tabs[index]) {
     tabs[index].classList.remove(activeClass);
     caller.classList.add(activeClass);
+    if (caller.id === "preview") {
+      const form = document.querySelector("form");
+      form.style.display = "none";
+      fillPreview();
+    } else if (caller.id === "review") {
+      const preview = document.querySelector(".post__preview");
+      const prevBody = document.querySelector(".preview__body");
+      const prevTitle = document.querySelector(".preview__title");
+      const title = document.getElementById("title");
+      const body = document.getElementById("body");
+      const tarea = document.createElement("textarea");
+      console.log(prevBody.innerHTML.match(/<img.*?>/gi));
+
+      tarea.innerHTML = prevBody.innerHTML
+        .replace(/<\/p><p>/gm, "\n")
+        .replace(/\n+$/, "")
+        .replace(/<img.*?>/gi, "")
+        .replace(/<br\s*[\/]?>/gi, "\n\n")
+        .replace(/<\/?p[^>]*>/g, "");
+      body.value = tarea.value;
+      title.value = prevTitle.innerText;
+      preview.style.display = "none";
+      const form = document.querySelector("form");
+      form.style.display = "block";
+    }
   }
+};
+
+const openInput = function () {
+  const input = document.querySelector(".filedrag");
+  input.click();
+};
+
+const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+
+const uploadFile = async function (file) {
+  const f = new FormData();
+  f.append("file", file);
+  const upload = fetch("/api/v1/upload/file", {
+    method: "POST",
+    body: f,
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      const preview = document.querySelector(".post__preview");
+      const prevBody = document.querySelector(".preview__body");
+      const prevTitle = document.querySelector(".preview__title");
+      const title = document.getElementById("title");
+      const body = document.getElementById("body");
+      const notyf = new Notyf();
+      if (result["status"] === true) {
+        notyf.success("Success!");
+        imageURLs.push(result["name"]);
+        console.log(imageURLs);
+        body.value += `\n[!image(${result["name"]})]`;
+      } else {
+        notyf.error(result["reason"]);
+      }
+    })
+    .catch((error) => handleErrors(error));
+};
+
+const preventDefaults = function (e) {
+  e.preventDefault();
+};
+
+const handleDrop = function (e) {
+  // Function to handle file drop
+  const dt = e.dataTransfer;
+  const files = dt.files;
+  handleFiles(files);
+};
+
+const validateFile = function (file) {
+  // Check for valid file type
+};
+
+const handleFiles = function (files) {
+  // Handle files on client side for good UX
+  files = [...files];
+  console.log(files);
+  const valid = files.every((file) => {
+    return file.size / 1024 / 1024 < 2;
+  });
+  if (!valid) {
+    return handleErrors("One or more files were too large (MAX - 2MB)");
+    // return handleErrors("Max file size is 2MB");
+  }
+  // initializeProgress(files.length);
+  files.forEach(uploadFile);
 };
