@@ -25,12 +25,11 @@
   }
 
   & {
-    display: block;
+    display: flex;
+    justify-content: space-between;
   }
 
   &__checkbox {
-    float: right;
-    position: relative;
-    top: 1.5rem;
+    align-self: center;
   }
 }

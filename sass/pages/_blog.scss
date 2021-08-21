@@ -16,6 +16,10 @@
     position: absolute;
     padding: 5rem;
     right: 0;
+
+    @media screen and (max-width: 84.375em) {
+      display: none;
+    }
   }
 
   &__sidebar {
@@ -28,18 +32,22 @@
     width: 15rem;
     z-index: 1;
   }
+
+  &__description {
+    font-size: small;
+  }
 }
 
 .post {
   display: flex;
   flex-flow: column wrap;
-  height: 80%;
+  height: 70%;
   align-items: center;
   padding: 5rem;
-  background-color: $color-grey-main;
+  background-color: whitesmoke;
 
   &__row {
-    background-color: $color-white;
+    background-color: $color-tertiary;
     width: 50%;
     border: 1px solid $color-black;
     border-radius: $border-radius-default;
@@ -47,13 +55,79 @@
     height: 10rem;
     display: flex;
 
+    @media screen and (max-width: 84.375em) {
+      width: 80%;
+    }
+
     &--create {
       height: 7rem;
     }
   }
 
+  &__body {
+    display: flex;
+
+    &--text {
+      display: flex;
+      flex-flow: column nowrap;
+      flex: 5;
+    }
+  }
+
+  &__items {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding-left: 1rem;
+  }
+
+  &__embed {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed $color-black;
+    cursor: pointer;
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+
+    &--file {
+      flex: 0.5;
+      flex-direction: column;
+    }
+
+    &--link {
+      flex: 0;
+    }
+  }
+
+  &__submit {
+    height: 100%;
+    overflow: auto;
+  }
+
   &__title {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+  }
+
+  &__create {
+    margin-top: 10%;
+    display: block;
+    padding: 2rem;
+    height: auto;
+  }
+
+  &__preview {
+    overflow: auto;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+
+    &--image {
+      max-width: 100%;
+      height: auto;
+    }
   }
 }
 
