@@ -60,13 +60,13 @@ class UserList(Resource):
         ):
             args.friend = args.friend.replace("_", "\\_")
             users_like = (
-                Users.query.with_entities(Users.username,Users.id)
+                Users.query.with_entities(Users.username, Users.id)
                 .filter(Users.id != get_jwt_identity())
                 .filter(Users.username.ilike(f"{args.friend}%"))
                 .all()
             )
             print(users_like)
-            response = [{"id":id,"username":value} for (value,id) in users_like]
+            response = [{"id": id, "username": value} for (value, id) in users_like]
             print(response)
         user_obj = {}
         user_obj = response
@@ -99,7 +99,9 @@ class BlogList(Resource):
         ):
             args.name = args.name.replace("_", "\\_")
             blogs_like = (
-                BlogsInfo.query.with_entities(BlogsInfo.name, BlogsInfo.description, BlogsInfo.id)
+                BlogsInfo.query.with_entities(
+                    BlogsInfo.name, BlogsInfo.description, BlogsInfo.id
+                )
                 .filter(
                     (
                         BlogsInfo.name.ilike(f"%{args.name}%")
@@ -109,7 +111,10 @@ class BlogList(Resource):
                 .all()
             )
             print(blogs_like)
-            response = [{"name":blog,"desc":description,"id":id} for (blog, description, id) in blogs_like]
+            response = [
+                {"name": blog, "desc": description, "id": id}
+                for (blog, description, id) in blogs_like
+            ]
             print(response)
         blog_obj = {}
         blog_obj["blogs"] = response

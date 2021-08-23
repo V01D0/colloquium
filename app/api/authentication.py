@@ -66,6 +66,7 @@ class Login(Resource):
 
 api.add_resource(Login, "/auth/login")
 
+
 class Refresh(Resource):
     """Refresh JWT token"""
 
