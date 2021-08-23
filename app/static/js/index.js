@@ -108,6 +108,7 @@ const validateBase = function (blogs = false) {
 
 const generateUserString = function (
   element,
+  value,
   checked = false,
   last = false,
   type = "",
@@ -115,7 +116,7 @@ const generateUserString = function (
 ) {
   let userString = `<label class="user">${element}<input class="user__checkbox" type="checkbox" ${
     checked ? `checked` : ``
-  } id="" onclick="checkUser(this,${type})" name="" value="${element}"></label>`;
+  } id="" onclick="checkUser(this,${type})" name="" value="${value}"></label>`;
   if (type === "Blogs") {
     userString += `<p class="blog__description">${desc}</p>`;
   }
@@ -145,23 +146,49 @@ const getLikeUsers = function (friend) {
       const friends = fetch(`/api/v1/users/like?friend=${friend}`)
         .then((response) => response.json())
         .then((data) => {
-          const usersLike = data["users"];
-          if (usersLike.length === 0) {
+          const usersLike = data;
+          users.innerHTML = "";
+          console.log(Object.keys(usersLike).length);
+          if (Object.keys(usersLike).length === 0) {
             users.innerHTML = `NO MATCHES FOUND`;
             users.style.fontWeight = 300;
             users.style.border = "none";
           }
-          usersLike.forEach((element, index, arr) => {
-            users.innerHTML = "";
+          Object.entries(usersLike).forEach(([, value], index, arr) => {
+            console.log(value);
             users.style.fontWeight = "inherit";
             if (index === arr.length - 1) {
-              users.innerHTML += usernames.includes(element)
-                ? generateUserString(element, true, true, "usernames")
-                : generateUserString(element, false, true, "usernames");
+              console.log(value["id"] + value["username"]);
+              users.innerHTML += usernames.includes(value["id"])
+                ? generateUserString(
+                    value["username"],
+                    value["id"],
+                    true,
+                    true,
+                    "usernames"
+                  )
+                : generateUserString(
+                    value["username"],
+                    value["id"],
+                    false,
+                    true,
+                    "usernames"
+                  );
             } else {
-              const res = usernames.includes(element) ? true : false;
+              console.log(value.id, value.username);
+              const res = usernames.includes(value["id"]) ? true : false;
+              console.log(
+                generateUserString(
+                  value["username"],
+                  value["id"],
+                  res,
+                  false,
+                  "usernames"
+                )
+              );
               users.innerHTML += generateUserString(
-                element,
+                value["username"],
+                value["id"],
                 res,
                 false,
                 "usernames"
@@ -169,7 +196,10 @@ const getLikeUsers = function (friend) {
             }
           });
         })
-        .catch((error) => handleErrors(error));
+        .catch((error) => {
+          console.log(error);
+          handleErrors("An error occurred");
+        });
       if (users != null) {
         users.style.border = "1px solid black";
       }
@@ -207,21 +237,37 @@ const getLikeBlogs = function (blogName) {
             blogs.style.border = "none";
           } else {
             blogs.innerHTML = "";
-            Object.entries(blogsLike).forEach(([key, value], index) => {
+            Object.entries(blogsLike).forEach(([, value], index) => {
+              console.log(value);
               blogs.style.marginBottom = "1rem";
               blogs.style.fontWeight = "inherit";
               if (index === Object.keys(blogsLike).length - 1) {
-                blogs.innerHTML += Blogs.includes(key)
-                  ? generateUserString(key, true, true, "Blogs", value)
-                  : generateUserString(key, false, true, "Blogs", value);
+                blogs.innerHTML += Blogs.includes(value["id"])
+                  ? generateUserString(
+                      value["name"],
+                      value["id"],
+                      true,
+                      true,
+                      "Blogs",
+                      value["desc"]
+                    )
+                  : generateUserString(
+                      value["name"],
+                      value["id"],
+                      false,
+                      true,
+                      "Blogs",
+                      value["desc"]
+                    );
               } else {
-                const res = Blogs.includes(key) ? true : false;
+                const res = Blogs.includes(value["id"]) ? true : false;
                 blogs.innerHTML += generateUserString(
-                  key,
+                  value["name"],
+                  value["id"],
                   res,
                   false,
                   "Blogs",
-                  value
+                  value["desc"]
                 );
               }
             });
@@ -425,17 +471,22 @@ const handleDrop = function (e) {
   handleFiles(files);
 };
 
-const validateFile = function (file) {
-  // Check for valid file type
-};
-
 const handleFiles = function (files) {
   // Handle files on client side for good UX
   files = [...files];
   console.log(files);
-  const valid = files.every((file) => {
-    return file.size / 1024 / 1024 < 2;
-  });
+  const valid =
+    files.every((file) => {
+      return file.size / 1024 / 1024 < 2;
+    }) &&
+    files.every((file) => {
+      return (
+        file.type.split("/")[1] === "png" ||
+        file.type.split("/")[1] === "jpeg" ||
+        file.type.split("/")[1] === "gif"
+      );
+    });
+  console.log(valid);
   if (!valid) {
     return handleErrors("One or more files were too large (MAX - 2MB)");
     // return handleErrors("Max file size is 2MB");
