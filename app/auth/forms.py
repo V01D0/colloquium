@@ -2,7 +2,21 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField
 from wtforms.fields.core import BooleanField
 from wtforms.fields.html5 import EmailField
-from wtforms.validators import DataRequired, Email, Regexp, length, EqualTo
+from wtforms.validators import (
+    DataRequired,
+    Email,
+    Regexp,
+    length,
+    EqualTo,
+    ValidationError,
+)
+from ..models import Users
+
+
+def check_mail(form, field):
+    mail = Users.query.filter_by(email=field.data).first()
+    if mail is not None:
+        raise ValidationError("An error occured.")
 
 
 class LoginForm(FlaskForm):
@@ -81,6 +95,10 @@ class GetMailForm(FlaskForm):
 
     email = EmailField(
         "E-mail",
-        validators=[DataRequired(), Email("This field requires a valid email address")],
+        validators=[
+            DataRequired(),
+            Email("This field requires a valid email address"),
+            check_mail,
+        ],
     )
     submit = SubmitField("Send registration mail")

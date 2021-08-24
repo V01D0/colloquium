@@ -16,16 +16,15 @@ from flask_login import login_user, logout_user, login_required, current_user
 from ..email import send_email
 from app import models
 from app import email
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import get_jwt
-from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import JWTManager
-from flask_jwt_extended import set_access_cookies
-from flask_jwt_extended import unset_jwt_cookies
-from datetime import datetime
-from datetime import timedelta
-from datetime import timezone
+from flask_jwt_extended import (
+    set_access_cookies,
+    create_access_token,
+    unset_jwt_cookies,
+    JWTManager,
+    get_jwt_identity,
+    get_jwt,
+)
+from datetime import datetime, timedelta, timezone, date
 
 
 @auth.route("/login", methods=["GET", "POST"])
@@ -41,8 +40,13 @@ def login():
             if next is None or not next.startswith("/"):
                 next = url_for("main.index")
             response = make_response(redirect(next))
+            if form.remember_me.data:
+                access_token = create_access_token(
+                    identity=user.id, expires_delta=timedelta(days=1, hours=12)
+                )
+            else:
+                access_token = create_access_token(identity=user.id)
             login_user(user, form.remember_me.data)
-            access_token = create_access_token(identity=form.username.data)
             set_access_cookies(response, access_token)
             return response
         else:
@@ -66,9 +70,6 @@ def sign_up():
             flash("A confirmation email has been sent to you by email.", "success")
             return redirect(url_for("main.index"))
             # send_email(form.email.data, "Colloquium registration", "auth/verify/")
-        else:
-            flash("An error occured", "error")
-            return redirect(url_for(".sign_up"))
     return render_template("auth/get_mail.html", form=form)
 
 
