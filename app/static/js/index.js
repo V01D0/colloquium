@@ -175,7 +175,6 @@ const getLikeUsers = function (friend) {
                     "usernames"
                   );
             } else {
-              console.log(value.id, value.username);
               const res = usernames.includes(value["id"]) ? true : false;
               console.log(
                 generateUserString(
@@ -374,7 +373,6 @@ const fillPreview = function () {
         }
       } else {
         prevBody.innerHTML += "<br/>";
-        // console.log(prevBody.innerHTML);
       }
     });
   console.log(prevBody.innerHTML);
@@ -403,8 +401,10 @@ const switchTabs = function () {
       const title = document.getElementById("title");
       const body = document.getElementById("body");
       const tarea = document.createElement("textarea");
-      console.log(prevBody.innerHTML.match(/<img.*?>/gi));
-
+      console.log(prevBody.innerText);
+      if (prevBody.innerText.trim() === "") {
+        prevBody.innerText = "";
+      }
       tarea.innerHTML = prevBody.innerHTML
         .replace(/<\/p><p>/gm, "\n")
         .replace(/\n+$/, "")
